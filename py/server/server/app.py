@@ -1,6 +1,7 @@
 import csv
 import datetime
 import math
+import os
 import sys
 from dataclasses import dataclass
 
@@ -12,7 +13,12 @@ from sqlalchemy import (Boolean, Column, Integer, MetaData, String,
 from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy.types import Date
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///server/enchantments.db"
+# SQLALCHEMY_DATABASE_URL = "sqlite:///server/enchantments.db"
+DB_USER = os.environ['postgresUser']
+DB_HOST = os.environ['postgresHost']
+DB_DATABASE = os.environ['postgresDb']
+
+SQLALCHEMY_DATABASE_URL = f"postgresql://{DB_USER}@{DB_HOST}/{DB_DATABASE}"
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}, echo=False
 )

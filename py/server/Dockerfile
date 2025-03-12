@@ -3,6 +3,11 @@ LABEL authors="Sebastian"
 
 ARG SRC_FOLDER="server"
 
+# Required for psycopg2
+RUN apk update && \
+    apk add python3-dev \
+    apk add libpq-dev
+
 # Poetry required files
 COPY poetry.lock .
 COPY pyproject.toml .
@@ -17,4 +22,5 @@ COPY ${SRC_FOLDER}/ ./${SRC_FOLDER}
 
 RUN poetry install --only main
 
+#CMD ["poetry", "run", "gunicorn", "-b", ":5001", "server.app:create_app()"]
 CMD ["poetry", "run", "flask", "--app", "server.app", "--debug", "run", "--host", "0.0.0.0", "--port", "5001"]
